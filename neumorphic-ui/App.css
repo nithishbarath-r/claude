@@ -1,0 +1,421 @@
+/* ==========================================================================
+   Neumorphic App.css — drop-in replacement for the Vite starter's App.css.
+   Same selectors, so the starter's App.jsx/App.tsx works unchanged.
+   Self-contained: every token is defined here, light + dark.
+   ========================================================================== */
+
+:root {
+  /* Surface: one base colour, everything is extruded from or pressed into it */
+  --neu-surface: #e4e9f0;
+  --neu-surface-hi: #eef2f7;
+  --neu-light: rgba(255, 255, 255, 0.9);
+  --neu-dark: rgba(163, 177, 198, 0.65);
+
+  --neu-text: #5b6577;
+  --neu-text-h: #2a3140;
+  --neu-muted: #8a94a6;
+  --neu-accent: #6c5ce7;
+  --neu-accent-2: #8e7dff;
+  --neu-accent-ink: #ffffff;
+  --neu-ring: rgba(108, 92, 231, 0.45);
+
+  /* Elevation scale */
+  --neu-raised-sm: 4px 4px 8px var(--neu-dark), -4px -4px 8px var(--neu-light);
+  --neu-raised: 8px 8px 16px var(--neu-dark), -8px -8px 16px var(--neu-light);
+  --neu-raised-lg: 18px 18px 36px var(--neu-dark),
+    -18px -18px 36px var(--neu-light);
+  --neu-pressed: inset 4px 4px 8px var(--neu-dark),
+    inset -4px -4px 8px var(--neu-light);
+  --neu-pressed-deep: inset 7px 7px 14px var(--neu-dark),
+    inset -7px -7px 14px var(--neu-light);
+
+  --neu-radius-sm: 12px;
+  --neu-radius: 20px;
+  --neu-radius-lg: 32px;
+  --neu-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --neu-surface: #23272f;
+    --neu-surface-hi: #2a2f38;
+    --neu-light: rgba(255, 255, 255, 0.05);
+    --neu-dark: rgba(0, 0, 0, 0.55);
+
+    --neu-text: #a3acbd;
+    --neu-text-h: #eef1f6;
+    --neu-muted: #6f7888;
+    --neu-accent: #9d8cff;
+    --neu-accent-2: #b8abff;
+    --neu-accent-ink: #15121f;
+    --neu-ring: rgba(157, 140, 255, 0.5);
+
+    color-scheme: dark;
+  }
+}
+
+body {
+  background: var(--neu-surface);
+  color: var(--neu-text);
+}
+
+#root {
+  border-inline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Counter — a physical push button
+   -------------------------------------------------------------------------- */
+.counter {
+  position: relative;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  padding: 16px 32px;
+  margin-bottom: 24px;
+  border: none;
+  border-radius: 999px;
+  color: var(--neu-text-h);
+  background: var(--neu-surface);
+  box-shadow: var(--neu-raised);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition:
+    box-shadow 0.35s var(--neu-ease),
+    color 0.35s var(--neu-ease),
+    transform 0.15s var(--neu-ease);
+
+  &::before {
+    /* accent status dot */
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    background: linear-gradient(135deg, var(--neu-accent-2), var(--neu-accent));
+    box-shadow: 0 0 10px var(--neu-ring);
+  }
+
+  &:hover {
+    color: var(--neu-accent);
+    box-shadow: var(--neu-raised-lg);
+  }
+  &:active {
+    transform: scale(0.98);
+    box-shadow: var(--neu-pressed);
+  }
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--neu-raised), 0 0 0 3px var(--neu-surface),
+      0 0 0 6px var(--neu-ring);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero — logos sit on a raised disc inside a pressed well
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--neu-surface);
+  box-shadow: var(--neu-pressed-deep);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 22px;
+    border-radius: 50%;
+    background: linear-gradient(
+      145deg,
+      var(--neu-surface-hi),
+      var(--neu-surface)
+    );
+    box-shadow: var(--neu-raised);
+  }
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(6px 8px 10px var(--neu-dark));
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 2;
+    top: 79px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+    animation: neu-float 6s var(--neu-ease) infinite;
+  }
+
+  .vite {
+    z-index: 1;
+    top: 152px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+@keyframes neu-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -5px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Center stage
+   -------------------------------------------------------------------------- */
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+  padding: 72px 24px 40px;
+  text-align: center;
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--neu-text-h);
+    text-shadow: 2px 2px 3px var(--neu-dark), -2px -2px 3px var(--neu-light);
+  }
+
+  p {
+    margin: 0;
+    color: var(--neu-text);
+  }
+
+  code {
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    color: var(--neu-accent);
+    background: var(--neu-surface);
+    box-shadow: var(--neu-pressed);
+  }
+
+  @media (max-width: 1024px) {
+    padding: 48px 16px 24px;
+    gap: 24px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Next steps — two raised cards
+   -------------------------------------------------------------------------- */
+#next-steps {
+  display: flex;
+  gap: 32px;
+  padding: 40px;
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 36px;
+    border-radius: var(--neu-radius-lg);
+    background: var(--neu-surface);
+    box-shadow: var(--neu-raised);
+    transition: box-shadow 0.4s var(--neu-ease);
+
+    &:hover {
+      box-shadow: var(--neu-raised-lg);
+    }
+
+    @media (max-width: 1024px) {
+      padding: 28px 20px;
+    }
+  }
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    color: var(--neu-text-h);
+  }
+
+  p {
+    margin: 0;
+    color: var(--neu-muted);
+  }
+
+  .icon {
+    box-sizing: content-box;
+    width: 22px;
+    height: 22px;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: var(--neu-radius-sm);
+    color: var(--neu-accent);
+    background: var(--neu-surface);
+    box-shadow: var(--neu-pressed);
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 16px;
+    text-align: center;
+  }
+}
+
+/* The starter used a divider between the two columns; cards replace it. */
+#docs {
+  border: none;
+}
+
+/* --------------------------------------------------------------------------
+   Link chips — raised pills that press in
+   -------------------------------------------------------------------------- */
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 28px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: var(--neu-radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--neu-text-h);
+    text-decoration: none;
+    background: var(--neu-surface);
+    box-shadow: var(--neu-raised-sm);
+    transition:
+      box-shadow 0.3s var(--neu-ease),
+      color 0.3s var(--neu-ease);
+
+    &:hover {
+      color: var(--neu-accent);
+      box-shadow: var(--neu-raised);
+    }
+    &:active {
+      box-shadow: var(--neu-pressed);
+    }
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--neu-raised-sm), 0 0 0 3px var(--neu-ring);
+    }
+
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 14px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Spacer + ticks — a soft carved groove instead of hairlines
+   -------------------------------------------------------------------------- */
+#spacer {
+  height: 72px;
+  border: none;
+
+  @media (max-width: 1024px) {
+    height: 40px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: calc(100% - 80px);
+  height: 6px;
+  margin: 8px auto;
+  border-radius: 999px;
+  background: var(--neu-surface);
+  box-shadow: var(--neu-pressed);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    translate: 0 -50%;
+    background: var(--neu-surface);
+    box-shadow: var(--neu-raised-sm);
+  }
+
+  &::before {
+    left: -6px;
+  }
+  &::after {
+    right: -6px;
+  }
+
+  @media (max-width: 1024px) {
+    width: calc(100% - 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .framework {
+    animation: none;
+  }
+  .counter,
+  #next-steps > div,
+  #next-steps ul a {
+    transition: none;
+  }
+}
